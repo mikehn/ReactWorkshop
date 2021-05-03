@@ -13,6 +13,12 @@ const CHAT_GROUP_LIST = [
   { id: "23", name: "Amzaleg Family", lastSeen: new Date().getTime() }
 ];
 
+const MESSAGES = [
+  { user: "A", content: "message", time: "11:29" },
+  { user: "B", content: "other message", time: "11:30" },
+  { user: "A", content: "new message", time: "11:31" }
+];
+
 function useSearchResults(defaultIds) {
   const [activeChatIds, setActiveChatIds] = useState(defaultIds);
 
@@ -33,6 +39,12 @@ export default function ChatPage() {
   const [serachIds, onSearchChange] = useSearchResults(
     CHAT_GROUP_LIST.map(({ id }) => id)
   );
+  const [messages, setMessages] = useState(MESSAGES);
+
+  const onMessageSent = (newMsg) => {
+    setMessages([...messages, { user: "username", ...newMsg }]);
+  };
+
   return (
     <div className="main-content-pane">
       <section className="chat-list-section">
@@ -50,8 +62,8 @@ export default function ChatPage() {
           title="person/group name"
           subtitle="last seen/members"
         />
-        <ChatMessages />
-        <ChatInput />
+        <ChatMessages messages={messages} />
+        <ChatInput onMessageSent={onMessageSent} />
       </section>
     </div>
   );
